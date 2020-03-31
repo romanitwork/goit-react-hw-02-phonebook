@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import ContactForm from "./contactform/ContactForm";
 import ContactList from "./contactList/ContactList";
 import Filter from "./filter/Filter";
-
+import { CSSTransition } from "react-transition-group";
+import pb from "../transition/pb.module.css";
 
 class App extends Component {
   state = {
     contacts: [],
-    filter: ""
+    filter: "",
+    inUp: false
   };
 
   componentDidMount() {
@@ -16,7 +18,7 @@ class App extends Component {
         ? JSON.parse(localStorage.getItem("contacts"))
         : [];
     console.log(contacts);
-    this.setState({ contacts });
+    this.setState({ contacts, inUp: true });
   }
   componentDidUpdate() {
     // if()
@@ -50,10 +52,15 @@ class App extends Component {
   };
 
   render() {
-    // const { contacts } = this.state;
     return (
       <div>
-        <h1>Phonebook</h1>
+        <CSSTransition
+          in={this.state.inUp}
+          timeout={1500}
+          classNames={pb}
+        >
+          <h1>Phonebook</h1>
+        </CSSTransition>
         <ContactForm submitContact={this.submitContact} />
 
         <h2>Contacts</h2>
